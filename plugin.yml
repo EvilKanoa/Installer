@@ -1,0 +1,15 @@
+name: Installer
+main: ca.kanoa.installer.Installer
+version: 1.00.000
+author: 12323op
+
+commands:
+    install:
+        description: Installs from the online server
+        usage: /<command>
+    uninstall:
+        description: Uninstalls every plugin that has been installed via Installer
+        usage: /<command>
+    update:
+        description: Looks for outdated plugins and files and updates them
+        usage: /<command>

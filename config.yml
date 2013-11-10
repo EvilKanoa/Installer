@@ -1,0 +1,7 @@
+ftp:
+    host: 123.0.0.0
+    # 21 is the default FTP port, you can probably leave it as is, unless otherwise stated.
+    port: 21
+    username: admin
+    password: password123
+    folder: /
