@@ -1,6 +1,5 @@
 package ca.kanoa.installer.ftp;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,9 +27,9 @@ public class FTP {
 			
 			client.changeWorkingDirectory(FTPInfo.FTP_FOLDER);
 			client.setFileTransferMode(FTPClient.BINARY_FILE_TYPE);
-			client.retrieveFile(file, new FileOutputStream(new File(
-					Installer.getInstance().getDataFolder().getParentFile()
-					.getParentFile(), toFile)));
+			client.retrieveFile(file, new FileOutputStream(Installer
+					.getRootFile(toFile)));
+			System.out.println(Installer.getRootFile("TEST_FILE").getAbsolutePath());
 			client.disconnect();
 			return true;
 		} catch (SocketException e) {
@@ -51,9 +50,8 @@ public class FTP {
 				return false;
 			}
 			client.changeWorkingDirectory(FTPInfo.FTP_FOLDER);
-			client.storeFile(file, new FileInputStream(new File(
-					Installer.getInstance().getDataFolder().getParentFile()
-					.getParentFile(), file)));
+			client.storeFile(file, new FileInputStream(Installer
+					.getRootFile(file)));
 			return true;
 		} catch (SocketException e) {
 			e.printStackTrace();

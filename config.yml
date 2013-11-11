@@ -5,3 +5,6 @@ ftp:
     username: admin
     password: password123
     folder: /
+sync-files:
+- /plugins/Installer/SYNC_DEFAULT
+- /plugins/Installer/SYNC_TEST

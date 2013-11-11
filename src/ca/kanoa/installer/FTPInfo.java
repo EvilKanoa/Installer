@@ -9,6 +9,7 @@ public class FTPInfo {
 	public static final String FTP_USERNAME;
 	public static final String FTP_PASSWORD;
 	public static final String FTP_FOLDER;
+	public static final String[] SYNC_FILES;
 	
 	static {
 		ConfigurationSection ftpConfig = Installer.getInstance().getConfig()
@@ -19,6 +20,9 @@ public class FTPInfo {
 		FTP_USERNAME = ftpConfig.getString("username");
 		FTP_PASSWORD = ftpConfig.getString("password");
 		FTP_FOLDER = ftpConfig.getString("folder");
+		
+		SYNC_FILES = Installer.getInstance().getConfig()
+				.getStringList("sync-files").toArray(new String[0]);
 		
 		ftpConfig = null;
 	}

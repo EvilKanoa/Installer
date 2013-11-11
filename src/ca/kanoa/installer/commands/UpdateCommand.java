@@ -1,31 +1,35 @@
 package ca.kanoa.installer.commands;
 
-import java.io.File;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import ca.kanoa.installer.FTPInfo;
 import ca.kanoa.installer.Installer;
 import ca.kanoa.installer.ftp.FTP;
 import ca.kanoa.installer.installation.FileInstallation;
 import ca.kanoa.installer.installation.FileInstallation.FileStatus;
-import ca.kanoa.installer.installation.VersionFile;
+import ca.kanoa.installer.installation.Sync;
 
 public class UpdateCommand extends SimpleCommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, String[] args) {
-		File localVersions = new File(Installer.getInstance().getDataFolder(), 
-				"VERSIONS");
-		if (!localVersions.exists()) {
-			sender.sendMessage(ChatColor.RED + "No install yet, use /install");
-			return true;
+		for (String s : FTPInfo.SYNC_FILES) {
+			if (!Installer.getRootFile(s).exists()) {
+				sender.sendMessage(ChatColor.RED + "No install yet, use /install");
+				return true;
+			}
 		}
-		FTP.downloadTo("plugins/Installer/VERSIONS", "plugins/Installer/VERSIONS.temp");
+
+		Installer.downloadSyncFiles("$path.temp");
+
+		Sync local = new Sync();
+		Sync remote = new Sync();
 		
-		VersionFile local = new VersionFile(new File(Installer.getInstance()
-				.getDataFolder(), "VERSIONS"));
-		VersionFile remote = new VersionFile(new File(Installer.getInstance()
-				.getDataFolder(), "VERSIONS.temp"));
+		local.add(FTPInfo.SYNC_FILES);
+		for (String s : FTPInfo.SYNC_FILES) {
+			remote.add(s + ".temp");
+		}
 
 		for (FileInstallation file : remote.getFiles()) {
 			FileStatus status = getStatus(file, local);
@@ -38,16 +42,18 @@ public class UpdateCommand extends SimpleCommandExecutor {
 				FTP.download(file.getLocalLocation());
 			}
 		}
-		new File(Installer.getInstance().getDataFolder(), 
-				"VERSIONS.temp").delete();
-		localVersions.delete();
-		FTP.download("plugins/Installer/VERSIONS");
+
+		for (String file : FTPInfo.SYNC_FILES) {
+			Installer.getRootFile(file).delete();
+			Installer.getRootFile(file + ".temp").delete();
+		}
+		Installer.downloadSyncFiles();
 		sender.sendMessage(ChatColor.GREEN + "Update complete!");
 		return true;
 	}
 
 	private FileStatus getStatus(FileInstallation installation, 
-			VersionFile local) {
+			Sync local) {
 		for (FileInstallation file : local.getFiles()) {
 			if (file.getLocalLocation().equalsIgnoreCase(installation
 					.getLocalLocation())) {
@@ -62,5 +68,5 @@ public class UpdateCommand extends SimpleCommandExecutor {
 		}
 		return FileStatus.NOT_INSTALLED;
 	}
-	
+
 }
