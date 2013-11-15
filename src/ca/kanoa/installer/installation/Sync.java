@@ -47,7 +47,8 @@ public class Sync {
 				FileInstallation fi = FileInstallation.parseString(s);
 				fileInstallations.add(fi);
 				for (FileInstallation f : fileInstallations) {
-					if (f.getLocalLocation().equalsIgnoreCase(fi.getLocalLocation())) {
+					if (f != fi &&
+							f.getLocalLocation().equalsIgnoreCase(fi.getLocalLocation())) {
 						if (f.getVersion() >= fi.getVersion()) {
 							fileInstallations.remove(fi);
 							break;

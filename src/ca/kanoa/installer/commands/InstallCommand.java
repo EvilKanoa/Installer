@@ -15,10 +15,11 @@ public class InstallCommand extends SimpleCommandExecutor {
 	public boolean onCommand(CommandSender sender, String[] args) {
 		Installer.downloadSyncFiles();
 
-		Sync files = new Sync();
-		files.add(FTPInfo.SYNC_FILES);
+		Sync sync = new Sync();
+		sync.add(FTPInfo.SYNC_FILES);
 		
-		for (FileInstallation file : files.getFiles()) {
+		for (FileInstallation file : sync.getFiles()) {
+			sender.sendMessage(ChatColor.LIGHT_PURPLE + "Downloading " + file.getLocalLocation() +  "...");
 			if (!FTP.download(file.getLocalLocation())) {
 				sender.sendMessage(ChatColor.RED + 
 						"Warning: Could not download " + 
