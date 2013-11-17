@@ -30,7 +30,6 @@ public class FTP {
 						"FTP error (if no error shown than bad login details");
 				return false;
 			}
-			client.setFileTransferMode(FTPClient.BINARY_FILE_TYPE);
 			File f = Installer.getRootFile(toFile);
 			if (f.getParentFile() != null) {
 				f.getParentFile().mkdirs();
@@ -78,11 +77,16 @@ public class FTP {
 	private static FTPClient connect() {
 		FTPClient client = new FTPClient();
 		try {
+			client.setDefaultTimeout(10000);
 		    client.setControlEncoding("UTF-8");
 			client.connect(FTPInfo.FTP_HOST, FTPInfo.FTP_PORT);
 			if (!client.login(FTPInfo.FTP_USERNAME, FTPInfo.FTP_PASSWORD)) {
 				return null;
 			}
+			client.setSoTimeout(10000);
+			client.setFileTransferMode(FTPClient.BINARY_FILE_TYPE);
+			client.enterLocalPassiveMode();
+			client.setFileType(FTPClient.BINARY_FILE_TYPE);
 			return client;
 		} catch (SocketException e) {
 			e.printStackTrace();

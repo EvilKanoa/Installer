@@ -34,11 +34,13 @@ public class UpdateCommand extends SimpleCommandExecutor {
 		for (FileInstallation file : remote.getFiles()) {
 			FileStatus status = getStatus(file, local);
 			if (status == FileStatus.OUTDATED) {
-				sender.sendMessage("Updating " + file.getLocalLocation() + "...");
+				sender.sendMessage(ChatColor.LIGHT_PURPLE + "Updating " + file
+						.getLocalLocation() + "...");
 				file.getFile().delete();
 				FTP.download(file.getLocalLocation());
 			} else if (status == FileStatus.NOT_INSTALLED) {
-				sender.sendMessage("Installing " + file.getLocalLocation() + "...");
+				sender.sendMessage(ChatColor.LIGHT_PURPLE + "Installing " + 
+						file.getLocalLocation() + "...");
 				FTP.download(file.getLocalLocation());
 			}
 		}
