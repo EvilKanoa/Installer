@@ -30,7 +30,7 @@ public class Installer extends JavaPlugin {
 		getCommand("uninstall").setExecutor(uninstallCommand);
 		getCommand("update").setExecutor(updateCommand);
 		
-		FTP.download("test.txt");
+		FTP.download("plugins/test2.txt");
 	}
 
 	public static Installer getInstance() {

@@ -17,6 +17,12 @@ public class FTP {
 	}
 	
 	public static boolean downloadTo(String file, String toFile) {
+		if (file.startsWith("/")) {
+			file = file.substring(1);
+		}
+		if (toFile.startsWith("/")) {
+			toFile = toFile.substring(1);
+		}
 		FTPClient client = connect();
 		try {
 			if (client == null) {
