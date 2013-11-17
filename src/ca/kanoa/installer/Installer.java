@@ -29,8 +29,6 @@ public class Installer extends JavaPlugin {
 		getCommand("install").setExecutor(installCommand);
 		getCommand("uninstall").setExecutor(uninstallCommand);
 		getCommand("update").setExecutor(updateCommand);
-		
-		FTP.download("plugins/test2.txt");
 	}
 
 	public static Installer getInstance() {
